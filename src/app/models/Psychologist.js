@@ -1,4 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
+import { DATE } from 'sequelize';
 
 class Psychologist extends Model {
   static init(sequelize) {
@@ -12,7 +13,7 @@ class Psychologist extends Model {
         psy_crp: Sequelize.STRING,
         psy_data_nasc: Sequelize.DATEONLY,
         psy_city: Sequelize.STRING,
-        psy_availability: Sequelize.ARRAY,
+        psy_availability: Sequelize.ARRAY({type: Sequelize.DATE}),
         psy_ativo: Sequelize.BOOLEAN,
       },
       {
