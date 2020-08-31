@@ -3,10 +3,11 @@ import Sequelize from 'sequelize';
 import Patient from '../app/models/Patient';
 import Psychologist from '../app/models/Psychologist';
 import Call from '../app/models/Call';
+import AttendanceHistory from '../app/models/AttendanceHistory';
 
 import databaseConfig from '../config/database';
 
-const models = [Patient, Psychologist, Call]
+const models = [Patient, Psychologist, Call, AttendanceHistory]
 
 class Database {
   constructor() {

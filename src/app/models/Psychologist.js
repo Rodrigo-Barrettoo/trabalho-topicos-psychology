@@ -20,6 +20,12 @@ class Psychologist extends Model {
         sequelize,
       }
     );
+    this.addHook('beforeSave', async (psychologist) => {
+      if (psychologist.psy_password) {
+        psychologist.psy_password_hash = await crypto.createHash('sha256').update(psychologist.psy_password).digest('hex');
+      }
+    });
+
     return this;
   }
 }

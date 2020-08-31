@@ -1,4 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
+import crypto from 'crypto';
 
 class Patient extends Model {
   static init(sequelize) {
@@ -14,6 +15,12 @@ class Patient extends Model {
         sequelize,
       }
     );
+    this.addHook('beforeSave', async (patient) => {
+      if (patient.pat_password) {
+        patient.pat_password_hash = await crypto.createHash('sha256').update(patient.pat_password).digest('hex');
+      }
+    });
+
     return this;
   }
 }
