@@ -1,5 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
-import { DATE } from 'sequelize';
+import bcrypt from 'bcrypt';
 
 class Psychologist extends Model {
   static init(sequelize) {
@@ -22,11 +22,15 @@ class Psychologist extends Model {
     );
     this.addHook('beforeSave', async (psychologist) => {
       if (psychologist.psy_password) {
-        psychologist.psy_password_hash = await crypto.createHash('sha256').update(psychologist.psy_password).digest('hex');
+        psychologist.psy_password_hash = await bcrypt.hash(psychologist.psy_password , 8);
       }
     });
 
     return this;
+  }
+
+  checkPasswordPsychologist(password) {
+    return bcrypt.compare(password, this.psy_password_hash);
   }
 }
 
