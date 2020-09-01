@@ -1,11 +1,15 @@
 import { Router } from "express";
-import Patient from "./routes/Patient";
-import Call from "./routes/Call";
+import CallController from "./app/controllers/CallController";
+import PatientController from "./app/controllers/PatientController";
+import PsychologistController from "./app/controllers/PsychologistController";
 
 const routes = new Router();
 
-routes.use("/Call", Call);
-routes.use("/Patient", Patient);
+// Cadastro de rotas
+routes.use("/Psychologist", PsychologistController);
+routes.use("/Call", CallController);
+routes.use("/Patient", PatientController);
+
 /*
 routes.get('/', async (request, response) => {
   try {
