@@ -118,4 +118,4 @@ class PsychologistController {
   }
 }
 
-export default new PsychlogistController();
+export default new PsychologistController();

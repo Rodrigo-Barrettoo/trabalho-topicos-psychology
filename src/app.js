@@ -1,5 +1,6 @@
 import express from "express";
 import routes from "./routes";
+var path = require("path");
 
 import "./database";
 
@@ -13,6 +14,8 @@ class App {
 
   middlewares() {
     this.server.use(express.json());
+    this.server.set("view engine", "ejs");
+    this.server.set("views", path.join(__dirname, "views"));
   }
 
   routes() {
