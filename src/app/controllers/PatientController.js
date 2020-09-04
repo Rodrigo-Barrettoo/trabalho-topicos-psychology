@@ -1,7 +1,7 @@
 import Patient from "../models/Patient";
 
 class PatientController {
-  async index(request, response) {
+  async show(request, response) {
     try {
       var id = request.params.id;
       const patient = await Patient.findByPk(id, {
