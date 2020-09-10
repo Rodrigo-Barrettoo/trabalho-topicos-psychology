@@ -1,24 +1,84 @@
-import Patient from '../models/Patient';
+import Patient from "../models/Patient";
 
 class PatientController {
   async index(request, response) {
-    const patient = await Patient.findAll();
-
-    return response.json(patient);
+    try {
+      var id = request.params.id;
+      const patient = await Patient.findByPk(id, {
+        attributes: { exclude: ["password", "pat_password_hash"] },
+      });
+      return response.json(patient);
+    } catch (error) {
+      console.log(error);
+      return response.json(error);
+    }
   }
 
   async store(request, response) {
-    const { pat_email } = request.body;
+    try {
+      const { name, password, email } = request.body;
 
-    const patientExists = await Patient.findOne({where: { pat_email }});
+      const patientExists = await Patient.findOne({
+        where: { pat_email: email },
+      });
 
-    if (patientExists) {
-      return response.send('Já existe um paciente com este e-mail!');
+      if (patientExists) {
+        return response.status(401).json({ error: "Usuário já cadastrado" });
+      }
+
+      const patient = await Patient.create(
+        {
+          pat_name: name,
+          pat_password_hash: password,
+          pat_email: email,
+        },
+        {
+          attributes: { exclude: ["password", "pat_password_hash"] },
+        }
+      );
+
+      return response.json(patient);
+    } catch (error) {
+      console.log(error);
+      return response.json(error);
     }
+  }
 
-    const { id, pat_name } = await Patient.create(request.body);
+  async update(request, response) {
+    try {
+      const { password, email, ativo } = request.body;
+      var id = request.params.id;
 
-    return response.json({ id, pat_name, pat_email });
+      const patient = await Patient.findByPk(id, {
+        attributes: { exclude: ["password", "pat_password_hash"] },
+      });
+
+      patient.pat_password_hash = password;
+      patient.pat_email = email;
+      patient.save();
+
+      return response.json(patient);
+    } catch (error) {
+      console.log(error);
+      return response.json(error);
+    }
+  }
+
+  async delete(request, response) {
+    try {
+      var id = request.params.id;
+
+      const patient = await Patient.findByPk(id, {
+        attributes: { exclude: ["password", "pat_password_hash"] },
+      });
+      patient.pat_ativo = false;
+      patient.save();
+
+      return response.json(patient);
+    } catch (error) {
+      console.log(error);
+      return response.json(error);
+    }
   }
 }
 

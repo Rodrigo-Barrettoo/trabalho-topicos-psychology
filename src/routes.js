@@ -1,21 +1,27 @@
-import { Router } from 'express';
-
-import PatientController from './app/controllers/PatientController';
-import SessionControllerPatient from './app/controllers/SessionControllerPatient';
-import SessionControllerPsychologist from './app/controllers/SessionControllerPsychologist';
-
-import Psychologist from './app/models/Psychologist';
-
-import authMiddleware from './app/middlewares/auth';
+import { Router } from "express";
+import CallController from "./app/controllers/CallController";
+import PatientController from "./app/controllers/PatientController";
+import PsychologistController from "./app/controllers/PsychologistController";
 
 const routes = new Router();
 
-routes.post('/sessionpatient', SessionControllerPatient.store);
-routes.post('/sessionpsychologist', SessionControllerPsychologist.store);
+// Cadastro de rotas
+routes.use("/Psychologist", PsychologistController);
+routes.use("/Call", CallController);
+routes.use("/Patient", PatientController);
 
-routes.use(authMiddleware);
-
-routes.post('/patients', PatientController.store);
-routes.get('/patients', PatientController.index);
+/*
+routes.get('/', async (request, response) => {
+  try {
+    const patient = await Patient.create({
+      pat_name: "rodrigo",
+      pat_password_hash: "123456",
+      pat_email: "teset@email.com",
+    })
+    return response.json(patient);
+  } catch (error) {
+    console.log(error);
+  }
+}); */
 
 export default routes;
