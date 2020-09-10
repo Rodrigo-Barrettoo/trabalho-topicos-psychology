@@ -3,7 +3,7 @@ var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
 //TODO: colocar isso em outro lugar
-io.on("connect", function (socket) {
+io.on("connect", async function (socket) {
   console.log(socket.id + " connectado");
 
   socket.on("transfer_room", function (data) {
@@ -11,11 +11,12 @@ io.on("connect", function (socket) {
     socket.join(data);
   });
 
-  socket.on("text", function (data) {
+  socket.on("text", async function (data) {
     console.log(
       "Texto: " + data.text + " para " + Object.values(socket.rooms)[1]
     );
-    socket.to(Object.values(socket.rooms)[1]).emit("text", data);
+
+    socket.to(data.room).emit("text", data);
   });
 
   socket.on("disconnect", function () {
@@ -24,8 +25,5 @@ io.on("connect", function (socket) {
 });
 
 //require("./routes/api")(app, io);
-io.on("chat", function () {
-  console.log("teste");
-});
 
 http.listen(3333);

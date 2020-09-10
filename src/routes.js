@@ -7,7 +7,13 @@ const routes = new Router();
 
 routes.use("/sala/:sala", function (req, res) {
   var room = req.params.sala;
-  return res.render("index", { title: "Sala " + room, rooms: room });
+  var isPsicologo = req.query.psicologo;
+
+  return res.render("index", {
+    title: "Sala " + room,
+    isPsicologo: isPsicologo != null,
+    rooms: room,
+  });
 });
 
 // Cadastro de rotas

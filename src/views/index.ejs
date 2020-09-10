@@ -73,6 +73,9 @@
       socket.emit("text", {
         name: $("#nameChat").val(),
         text: $("#textChat").val(),
+        isPsicologo: <%= isPsicologo %>,
+        room: <%= rooms %>
+
       });
 
       $("#chat").append(`<div class="row d-flex flex-row-reverse">
