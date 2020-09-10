@@ -38,7 +38,7 @@ class PsychologistController {
       } = request.body;
 
       const psychologistExists = await Psychologist.findOne({
-        where: { pat_email: email },
+        where: { psy_email: email },
       });
 
       if (psychologistExists) {
