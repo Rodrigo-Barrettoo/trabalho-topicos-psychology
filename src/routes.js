@@ -34,4 +34,4 @@ routes.get('/', async (request, response) => {
   }
 }); */
 
-module.exports = routes;
+export default routes;
