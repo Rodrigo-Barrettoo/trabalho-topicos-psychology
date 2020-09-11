@@ -12,8 +12,10 @@ routes.put("/Psychologist/:id", PsychologistController.update);
 routes.get("/Psychologist", PsychologistController.index);
 routes.delete("/Psychologist/:id", PsychologistController.delete);
 
+routes.get("/Call/:id/history", CallController.history);
 routes.get("/Call/:id", CallController.show);
 routes.post("/Call", CallController.store);
+routes.delete("/Call/:id", CallController.close);
 
 routes.get("/Patient/:id", PatientController.show);
 routes.post("/Patient", PatientController.store);

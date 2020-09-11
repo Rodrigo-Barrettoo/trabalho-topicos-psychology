@@ -1,4 +1,4 @@
-import Sequelize, { Model } from 'sequelize';
+import Sequelize, { Model } from "sequelize";
 
 class Call extends Model {
   static init(sequelize) {
@@ -6,11 +6,9 @@ class Call extends Model {
       {
         patient_id: Sequelize.INTEGER,
         psychologist_id: Sequelize.INTEGER,
-        pat_name: Sequelize.STRING,
-        pat_password: Sequelize.VIRTUAL,
-        pat_password_hash: Sequelize.STRING,
-        pat_email: Sequelize.STRING,
-        pat_ativo: Sequelize.BOOLEAN,
+        cal_start: Sequelize.DATE,
+        cal_end: Sequelize.DATE,
+        cal_note: Sequelize.STRING,
       },
       {
         sequelize,
@@ -21,12 +19,12 @@ class Call extends Model {
 
   static associate(models) {
     this.belongsTo(models.Patient, {
-      foreignKey: 'patient_id',
-      as: 'fk_patients',
+      foreignKey: "patient_id",
+      as: "fk_patients",
     });
     this.belongsTo(models.Psychologist, {
-      foreignKey: 'psychologist_id',
-      as: 'fk_psychologists',
+      foreignKey: "psychologist_id",
+      as: "fk_psychologists",
     });
   }
 }

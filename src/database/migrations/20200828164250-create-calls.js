@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return  queryInterface.createTable('calls', {
+    return queryInterface.createTable("calls", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -9,16 +9,16 @@ module.exports = {
       },
       patient_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'patients', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        references: { model: "patients", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: true,
       },
       psychologist_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'psychologists', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        references: { model: "psychologists", key: "id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: true,
       },
       cal_start: {
@@ -27,12 +27,12 @@ module.exports = {
       },
       cal_end: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
         unique: true,
       },
       cal_note: {
         type: Sequelize.STRING(2000),
-        allowNull: false,
+        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -46,6 +46,6 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    return await queryInterface.dropTable('calls');
-  }
+    return await queryInterface.dropTable("calls");
+  },
 };
