@@ -2,12 +2,23 @@ import { Router } from "express";
 import CallController from "./app/controllers/CallController";
 import PatientController from "./app/controllers/PatientController";
 import PsychologistController from "./app/controllers/PsychologistController";
+import SessionControllerPatient from "./app/controllers/SessionControllerPatient";
+import SessionControllerPsychologist from "./app/controllers/SessionControllerPsychologist";
+
+import autenticacaoMiddleware from "./app/middlewares/auth"
 
 const routes = new Router();
 
+routes.post("/sessionpatient", SessionControllerPatient.store);
+routes.post("/sessionpsychologist", SessionControllerPsychologist.store);
+
+routes.post("/Psychologist", PsychologistController.store);
+routes.post("/Patient", PatientController.store);
+
+routes.use(autenticacaoMiddleware);
+
 // Cadastro de rotas
 routes.get("/Psychologist/:id", PsychologistController.show);
-routes.post("/Psychologist", PsychologistController.store);
 routes.put("/Psychologist/:id", PsychologistController.update);
 routes.get("/Psychologist", PsychologistController.index);
 routes.delete("/Psychologist/:id", PsychologistController.delete);
@@ -18,7 +29,6 @@ routes.post("/Call", CallController.store);
 routes.delete("/Call/:id", CallController.close);
 
 routes.get("/Patient/:id", PatientController.show);
-routes.post("/Patient", PatientController.store);
 routes.put("/Patient/:id", PatientController.update);
 routes.delete("/Patient/:id", PatientController.delete);
 
