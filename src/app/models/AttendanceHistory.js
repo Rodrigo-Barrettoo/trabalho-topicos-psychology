@@ -1,6 +1,6 @@
-import Sequelize, { Model } from 'sequelize';
+import Sequelize, { Model } from "sequelize";
 
-class Call extends Model {
+class AttendanceHistory extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -17,11 +17,10 @@ class Call extends Model {
 
   static associate(models) {
     this.belongsTo(models.Call, {
-      foreignKey: 'call_id',
-      as: 'fk_calls',
+      foreignKey: "call_id",
+      as: "fk_calls",
     });
-
   }
 }
 
-export default Call;
+export default AttendanceHistory;

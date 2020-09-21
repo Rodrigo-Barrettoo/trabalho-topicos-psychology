@@ -3,10 +3,12 @@ import Patient from "../models/Patient";
 class PatientController {
   async show(request, response) {
     try {
-      var id = request.params.id;
+      const { id } = request.params;
+
       const patient = await Patient.findByPk(id, {
-        attributes: { exclude: ["password", "pat_password_hash"] },
+        attributes: { exclude: ["pat_password", "pat_password_hash"] },
       });
+
       return response.json(patient);
     } catch (error) {
       console.log(error);
@@ -26,18 +28,17 @@ class PatientController {
         return response.status(401).json({ error: "Usuário já cadastrado" });
       }
 
-      const patient = await Patient.create(
-        {
-          pat_name: name,
-          pat_password_hash: password,
-          pat_email: email,
-        },
-        {
-          attributes: { exclude: ["password", "pat_password_hash"] },
-        }
-      );
+      await Patient.create({
+        pat_name: name,
+        pat_password: password,
+        pat_email: email,
+      });
+      const patientCreated = await Patient.findOne({
+        where: { pat_email: email },
+        attributes: { exclude: ["pat_password_hash"] },
+      });
 
-      return response.json(patient);
+      return response.json(patientCreated);
     } catch (error) {
       console.log(error);
       return response.json(error);
@@ -46,15 +47,31 @@ class PatientController {
 
   async update(request, response) {
     try {
-      const { password, email, ativo } = request.body;
-      var id = request.params.id;
+      const { pat_password, pat_email } = request.body;
+      const { id } = request.params;
 
       const patient = await Patient.findByPk(id, {
-        attributes: { exclude: ["password", "pat_password_hash"] },
+        attributes: { exclude: ["pat_password", "pat_password_hash"] },
       });
 
-      patient.pat_password_hash = password;
+      const emailExists = await Patient.findOne(
+        { where: { pat_email: pat_email } },
+        {
+          attributes: { exclude: ["pat_password", "pat_password_hash"] },
+        }
+      );
+
+      if (!patient) {
+        return response.status(401).json({ error: "Usuário não cadastrado" });
+      }
+
+      if (emailExists) {
+        return response.status(401).json({ error: "Email  já cadastrado" });
+      }
+
+      patient.pat_password = password;
       patient.pat_email = email;
+
       patient.save();
 
       return response.json(patient);
@@ -66,10 +83,10 @@ class PatientController {
 
   async delete(request, response) {
     try {
-      var id = request.params.id;
+      const { id } = request.params;
 
       const patient = await Patient.findByPk(id, {
-        attributes: { exclude: ["password", "pat_password_hash"] },
+        attributes: { exclude: ["pat_password", "pat_password_hash"] },
       });
       patient.pat_ativo = false;
       patient.save();

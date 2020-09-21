@@ -1,5 +1,5 @@
-import Sequelize, { Model } from 'sequelize';
-import { DATE } from 'sequelize';
+import Sequelize, { Model } from "sequelize";
+import bcrypt from "bcrypt";
 
 class Psychologist extends Model {
   static init(sequelize) {
@@ -13,14 +13,27 @@ class Psychologist extends Model {
         psy_crp: Sequelize.STRING,
         psy_data_nasc: Sequelize.DATEONLY,
         psy_city: Sequelize.STRING,
-        psy_availability: Sequelize.ARRAY({type: Sequelize.DATE}),
+        psy_availability: Sequelize.ARRAY({ type: Sequelize.DATE }),
         psy_ativo: Sequelize.BOOLEAN,
       },
       {
         sequelize,
       }
     );
+    this.addHook("beforeSave", async (psychologist) => {
+      if (psychologist.psy_password) {
+        psychologist.psy_password_hash = await bcrypt.hash(
+          psychologist.psy_password,
+          8
+        );
+      }
+    });
+
     return this;
+  }
+
+  checkPasswordPsychologist(password) {
+    return bcrypt.compare(password, this.psy_password_hash);
   }
 }
 
