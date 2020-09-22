@@ -11,11 +11,11 @@ class SessionControllerPsychologist {
     const psychologist = await Psychologist.findOne({where: { psy_email }})
 
     if (!psychologist) {
-      return response.status(401).json({error: 'Não existe um psicólogo com este e-mail!'});
+      return response.status(401).json({error: 'E-mail e/ou senha incorreto! Verifique seus dados'});
     }
 
     if (!(await psychologist.checkPasswordPsychologist(psy_password))) {
-      return response.status(401).json({error: 'Senha não bate!' });
+      return response.status(401).json({error: 'E-mail e/ou senha incorreto! Verifique seus dados'});
     }
 
     const { id, psy_name } = psychologist;

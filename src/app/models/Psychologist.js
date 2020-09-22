@@ -13,7 +13,7 @@ class Psychologist extends Model {
         psy_crp: Sequelize.STRING,
         psy_data_nasc: Sequelize.DATEONLY,
         psy_city: Sequelize.STRING,
-        psy_availability: Sequelize.ARRAY({ type: Sequelize.DATE }),
+        psy_availability: Sequelize.ARRAY(Sequelize.DATE),
         psy_ativo: Sequelize.BOOLEAN,
       },
       {
