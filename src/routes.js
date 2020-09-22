@@ -9,6 +9,17 @@ import autenticacaoMiddleware from "./app/middlewares/auth"
 
 const routes = new Router();
 
+routes.use("/sala/:sala", function (req, res) {
+  var room = req.params.sala;
+  var isPsicologo = req.query.psicologo;
+
+  return res.render("index", {
+    title: "Sala " + room,
+    isPsicologo: isPsicologo != null,
+    rooms: room,
+  });
+});
+
 routes.post("/sessionpatient", SessionControllerPatient.store);
 routes.post("/sessionpsychologist", SessionControllerPsychologist.store);
 
