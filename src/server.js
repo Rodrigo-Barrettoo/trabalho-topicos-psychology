@@ -1,4 +1,5 @@
 import app from "./app";
+import AttendanceHistory from "./app/models/AttendanceHistory";
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
 
@@ -15,6 +16,16 @@ io.on("connect", async function (socket) {
     console.log(
       "Texto: " + data.text + " para " + Object.values(socket.rooms)[1]
     );
+
+    try {
+      await AttendanceHistory.create({
+        call_id: data.room,
+        ath_user: data.isUser,
+        ath_text: data.text,
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     socket.to(data.room).emit("text", data);
   });

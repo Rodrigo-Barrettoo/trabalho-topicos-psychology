@@ -14,6 +14,10 @@ class App {
 
   middlewares() {
     this.server.use(express.json());
+    this.server.use(function (req, res, next) {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      next();
+    });
     this.server.set("view engine", "ejs");
     this.server.set("views", path.join(__dirname, "views"));
   }
