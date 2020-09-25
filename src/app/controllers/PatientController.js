@@ -2,100 +2,70 @@ import Patient from "../models/Patient";
 
 class PatientController {
   async show(request, response) {
-    try {
-      const { id } = request.params;
+    const id = request.auth_id;
 
-      const patient = await Patient.findByPk(id, {
-        attributes: { exclude: ["pat_password", "pat_password_hash"] },
-      });
+    const patient = await Patient.findByPk(id, {
+      attributes: { exclude: ["pat_password", "pat_password_hash"] },
+    });
 
-      return response.json(patient);
-    } catch (error) {
-      console.log(error);
-      return response.json(error);
+    if (!patient) {
+      return response.status(401).json({ error: "Usuário não encontrado!" });
     }
+
+    return response.json(patient);
   }
 
   async store(request, response) {
-    try {
-      const { name, password, email } = request.body;
+    const { pat_name, pat_password, pat_email } = request.body;
 
-      const patientExists = await Patient.findOne({
-        where: { pat_email: email },
-      });
+    const patientExists = await Patient.findOne({
+      where: { pat_email },
+    });
 
-      if (patientExists) {
-        return response.status(401).json({ error: "Usuário já cadastrado" });
-      }
-
-      await Patient.create({
-        pat_name: name,
-        pat_password: password,
-        pat_email: email,
-      });
-      const patientCreated = await Patient.findOne({
-        where: { pat_email: email },
-        attributes: { exclude: ["pat_password_hash"] },
-      });
-
-      return response.json(patientCreated);
-    } catch (error) {
-      console.log(error);
-      return response.json(error);
+    if (patientExists) {
+      return response.status(401).json({ error: "Usuário já cadastrado" });
     }
+
+    const { id } = await Patient.create({
+      pat_name,
+      pat_password,
+      pat_email,
+    });
+
+    return response.json({ id, pat_name, pat_email });
   }
 
   async update(request, response) {
-    try {
-      const { pat_password, pat_email } = request.body;
-      const { id } = request.params;
+    const { pat_password, pat_email, pat_name } = request.body;
+    const id = request.auth_id;
 
-      const patient = await Patient.findByPk(id, {
-        attributes: { exclude: ["pat_password", "pat_password_hash"] },
-      });
+    const patient = await Patient.findByPk(id);
 
-      const emailExists = await Patient.findOne(
-        { where: { pat_email: pat_email } },
-        {
-          attributes: { exclude: ["pat_password", "pat_password_hash"] },
-        }
-      );
+    if (!patient) {
+      return response.status(401).json({ error: "Usuário não encontrado!" });
+    }
 
-      if (!patient) {
-        return response.status(401).json({ error: "Usuário não cadastrado" });
-      }
+    if (pat_email !== patient.pat_email) {
+      const emailExists = await Patient.findOne({ where: { pat_email }});
 
       if (emailExists) {
-        return response.status(401).json({ error: "Email  já cadastrado" });
+        return response.status(401).json({ error: "E-mail já cadastrado!"})
       }
-
-      patient.pat_password = password;
-      patient.pat_email = email;
-
-      patient.save();
-
-      return response.json(patient);
-    } catch (error) {
-      console.log(error);
-      return response.json(error);
     }
+
+    await patient.update({ pat_email, pat_password, pat_name });
+
+    return response.json({ pat_email, pat_name });
   }
 
   async delete(request, response) {
-    try {
-      const { id } = request.params;
+    const id = request.auth_id;
 
-      const patient = await Patient.findByPk(id, {
-        attributes: { exclude: ["pat_password", "pat_password_hash"] },
-      });
-      patient.pat_ativo = false;
-      patient.save();
+    const patient = await Patient.findByPk(id);
 
-      return response.json(patient);
-    } catch (error) {
-      console.log(error);
-      return response.json(error);
-    }
+    await patient.destroy();
+
+    return response.status(201).json({ success: "Usuário excluido com sucesso!" });
   }
 }
 

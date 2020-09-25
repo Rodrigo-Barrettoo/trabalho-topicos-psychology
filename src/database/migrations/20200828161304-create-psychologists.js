@@ -37,7 +37,7 @@ module.exports = {
         allowNull: false,
       },
       psy_availability: {
-        type: Sequelize.ARRAY({type: Sequelize.DATE}),
+        type: Sequelize.ARRAY(Sequelize.DATE),
         allowNull: false,
       },
       psy_ativo: {

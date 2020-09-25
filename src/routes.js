@@ -23,38 +23,22 @@ routes.use("/sala/:sala", function (req, res) {
 routes.post("/sessionpatient", SessionControllerPatient.store);
 routes.post("/sessionpsychologist", SessionControllerPsychologist.store);
 
-routes.post("/Psychologist", PsychologistController.store);
-routes.post("/Patient", PatientController.store);
+routes.post("/psychologist", PsychologistController.store);
+routes.post("/patient", PatientController.store);
 
 routes.use(autenticacaoMiddleware);
 
-// Cadastro de rotas
-routes.get("/Psychologist/:id", PsychologistController.show);
-routes.put("/Psychologist/:id", PsychologistController.update);
-routes.get("/Psychologist", PsychologistController.index);
-routes.delete("/Psychologist/:id", PsychologistController.delete);
+routes.get("/patient", PatientController.show);
+routes.put("/patient", PatientController.update);
+routes.delete("/Patient", PatientController.delete);
+
+routes.get("/psychologist", PsychologistController.show);
+routes.put("/psychologist", PsychologistController.update);
+routes.delete("/psychologist", PsychologistController.delete);
 
 routes.get("/Call/:id/history", CallController.history);
 routes.get("/Call/:id", CallController.show);
 routes.post("/Call", CallController.store);
 routes.delete("/Call/:id", CallController.close);
-
-routes.get("/Patient/:id", PatientController.show);
-routes.put("/Patient/:id", PatientController.update);
-routes.delete("/Patient/:id", PatientController.delete);
-
-/*
-routes.get('/', async (request, response) => {
-  try {
-    const patient = await Patient.create({
-      pat_name: "rodrigo",
-      pat_password_hash: "123456",
-      pat_email: "teset@email.com",
-    })
-    return response.json(patient);
-  } catch (error) {
-    console.log(error);
-  }
-}); */
 
 export default routes;

@@ -11,11 +11,11 @@ class SessionControllerPatient {
     const patient = await Patient.findOne({where: { pat_email }})
 
     if (!patient) {
-      return response.status(401).json({error: 'Não existe um paciente com este e-mail!'});
+      return response.status(401).json({error: 'E-mail e/ou senha incorreto! Verifique seus dados'});
     }
 
     if (!(await patient.checkPasswordPatient(pat_password))) {
-      return response.status(401).json({error: 'Senha não bate!' });
+      return response.status(401).json({error: 'E-mail e/ou senha incorreto! Verifique seus dados' });
     }
 
     const { id, pat_name } = patient;
