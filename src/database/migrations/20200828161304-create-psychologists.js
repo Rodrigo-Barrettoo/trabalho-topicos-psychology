@@ -36,10 +36,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      psy_availability: {
-        type: Sequelize.ARRAY(Sequelize.DATE),
-        allowNull: false,
-      },
       psy_ativo: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
