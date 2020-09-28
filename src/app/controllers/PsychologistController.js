@@ -24,7 +24,6 @@ class PsychologistController {
       psy_crp,
       psy_data_nasc,
       psy_city,
-      psy_availability,
     } = request.body;
 
     const psychologistExists = await Psychologist.findOne({
@@ -34,8 +33,6 @@ class PsychologistController {
     if (psychologistExists) {
       return response.status(401).json({ error: "psicólogo já cadastrado" });
     }
-    console.log(psy_availability);
-
 
     const { id } = await Psychologist.create({
       psy_name,
@@ -45,7 +42,6 @@ class PsychologistController {
       psy_crp,
       psy_data_nasc,
       psy_city,
-      psy_availability
     });
 
 
@@ -57,7 +53,6 @@ class PsychologistController {
       psy_crp,
       psy_data_nasc,
       psy_city,
-      psy_availability
     });
   }
 
@@ -70,7 +65,6 @@ class PsychologistController {
       psy_crp,
       psy_data_nasc,
       psy_city,
-      psy_availability,
     } = request.body;
 
     const id = request.auth_id;
@@ -97,7 +91,6 @@ class PsychologistController {
       psy_crp,
       psy_data_nasc,
       psy_city,
-      psy_availability,
     });
 
     return response.json({
@@ -107,7 +100,6 @@ class PsychologistController {
       psy_crp,
       psy_data_nasc,
       psy_city,
-      psy_availability,
     });
   }
 
