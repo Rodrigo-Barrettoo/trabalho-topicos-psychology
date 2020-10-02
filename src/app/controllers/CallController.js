@@ -7,11 +7,21 @@ class CallController {
   async show(request, response) {
     try {
       const { id } = request.params;
-      const call = await Call.findOne({ where: { id: id } });
-
-      if (!call) {
-        return response.json({ message: "Atendimento não existente" });
-      }
+      const call = await Call.findOne({
+        where: { id: id },
+        include: [
+          {
+            model: Patient,
+            as: "fk_patients",
+            attributes: { exclude: ["pat_password_hash"] },
+          },
+          {
+            model: Psychologist,
+            as: "fk_psychologists",
+            attributes: { exclude: ["psy_password_hash"] },
+          },
+        ],
+      });
 
       return response.json(call);
     } catch (error) {
@@ -89,7 +99,7 @@ class CallController {
 
       const history = await AttendanceHistory.findAll({
         where: { call_id: id },
-        //order: [["created_at", "asc"]],
+        order: [["created_at", "asc"]],
       });
 
       return response.json(history);
