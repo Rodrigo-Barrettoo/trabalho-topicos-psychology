@@ -4,6 +4,7 @@ import PatientController from "./app/controllers/PatientController";
 import PsychologistController from "./app/controllers/PsychologistController";
 import SessionControllerPatient from "./app/controllers/SessionControllerPatient";
 import SessionControllerPsychologist from "./app/controllers/SessionControllerPsychologist";
+import Psy_availabilityController from "./app/controllers/Psy_availabilityController";
 
 import autenticacaoMiddleware from "./app/middlewares/auth"
 
@@ -35,6 +36,10 @@ routes.delete("/Patient", PatientController.delete);
 routes.get("/psychologist", PsychologistController.show);
 routes.put("/psychologist", PsychologistController.update);
 routes.delete("/psychologist", PsychologistController.delete);
+
+routes.get("/psy-availability", Psy_availabilityController.show);
+routes.post("/psy-availability", Psy_availabilityController.store);
+routes.delete("/psy-availability/:id", Psy_availabilityController.delete);
 
 routes.get("/Call/:id/history", CallController.history);
 routes.get("/Call/:id", CallController.show);
