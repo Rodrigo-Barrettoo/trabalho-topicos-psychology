@@ -6,7 +6,7 @@ class AttendanceHistory extends Model {
       {
         call_id: Sequelize.INTEGER,
         ath_user: Sequelize.BOOLEAN,
-        ath_text: Sequelize.VIRTUAL,
+        ath_text: Sequelize.TEXT,
       },
       {
         sequelize,

@@ -5,7 +5,7 @@ var io = require("socket.io")(http);
 
 //TODO: colocar isso em outro lugar
 io.on("connect", async function (socket) {
-  console.log(socket.id + " connectado");
+  // console.log(socket.id + " connectado");
 
   socket.on("transfer_room", function (data) {
     console.log("transferindo para sala" + data);
@@ -31,7 +31,7 @@ io.on("connect", async function (socket) {
   });
 
   socket.on("disconnect", function () {
-    console.log(socket.id + " desconnectado");
+    //  console.log(socket.id + " desconnectado");
   });
 });
 
