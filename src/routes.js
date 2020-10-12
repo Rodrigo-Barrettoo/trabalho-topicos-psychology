@@ -6,7 +6,7 @@ import SessionControllerPatient from "./app/controllers/SessionControllerPatient
 import SessionControllerPsychologist from "./app/controllers/SessionControllerPsychologist";
 import Psy_availabilityController from "./app/controllers/Psy_availabilityController";
 
-import autenticacaoMiddleware from "./app/middlewares/auth"
+import autenticacaoMiddleware from "./app/middlewares/auth";
 
 const routes = new Router();
 
@@ -27,6 +27,10 @@ routes.post("/sessionpsychologist", SessionControllerPsychologist.store);
 routes.post("/psychologist", PsychologistController.store);
 routes.post("/patient", PatientController.store);
 
+routes.post("/call", CallController.store);
+routes.get("/call/:id/history", CallController.history);
+routes.get("/call/:id", CallController.show);
+
 routes.use(autenticacaoMiddleware);
 
 routes.get("/patient", PatientController.show);
@@ -41,9 +45,7 @@ routes.get("/psy-availability", Psy_availabilityController.show);
 routes.post("/psy-availability", Psy_availabilityController.store);
 routes.delete("/psy-availability/:id", Psy_availabilityController.delete);
 
-routes.get("/Call/:id/history", CallController.history);
-routes.get("/Call/:id", CallController.show);
-routes.post("/Call", CallController.store);
-routes.delete("/Call/:id", CallController.close);
+routes.put("/call/:id", CallController.edit);
+routes.post("/call/:id", CallController.close);
 
 export default routes;
