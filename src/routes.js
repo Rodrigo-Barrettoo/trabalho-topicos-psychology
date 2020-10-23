@@ -36,10 +36,12 @@ routes.use(autenticacaoMiddleware);
 routes.get("/patient", PatientController.show);
 routes.put("/patient", PatientController.update);
 routes.delete("/Patient", PatientController.delete);
+routes.get("/patient/calls", PatientController.calls);
 
 routes.get("/psychologist", PsychologistController.show);
 routes.put("/psychologist", PsychologistController.update);
 routes.delete("/psychologist", PsychologistController.delete);
+routes.get("/psychologist/calls", PsychologistController.calls);
 
 routes.get("/psy-availability", Psy_availabilityController.show);
 routes.post("/psy-availability", Psy_availabilityController.store);

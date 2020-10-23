@@ -1,4 +1,6 @@
 import Psychologist from "../models/Psychologist";
+import Call from "../models/Call";
+import Patient from "../models/Patient";
 
 class PsychologistController {
   async show(request, response) {
@@ -13,6 +15,31 @@ class PsychologistController {
     }
 
     return response.json(psychologist);
+  }
+
+  async calls(request, response) {
+    try {
+      const id = request.auth_id;
+      const call = await Call.findAll({
+        where: { psychologist_id: id },
+        include: [
+          {
+            model: Patient,
+            as: "fk_patients",
+            attributes: { exclude: ["pat_password_hash"] },
+          },
+          {
+            model: Psychologist,
+            as: "fk_psychologists",
+            attributes: { exclude: ["psy_password_hash"] },
+          },
+        ],
+      });
+
+      return response.json(call);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async store(request, response) {
@@ -43,7 +70,6 @@ class PsychologistController {
       psy_data_nasc,
       psy_city,
     });
-
 
     return response.json({
       id,
@@ -76,10 +102,10 @@ class PsychologistController {
     }
 
     if (psy_email !== psychologist.psy_email) {
-      const emailExists = await Psychologist.findOne({ where: { psy_email }});
+      const emailExists = await Psychologist.findOne({ where: { psy_email } });
 
       if (emailExists) {
-        return response.status(401).json({ error: "E-mail já cadastrado!"})
+        return response.status(401).json({ error: "E-mail já cadastrado!" });
       }
     }
 
@@ -110,7 +136,9 @@ class PsychologistController {
 
     await psychologist.destroy();
 
-    return response.status(201).json({ success: "Psicológo excluido com sucesso!" });
+    return response
+      .status(201)
+      .json({ success: "Psicológo excluido com sucesso!" });
   }
 }
 
