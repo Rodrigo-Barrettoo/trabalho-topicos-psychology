@@ -37,6 +37,7 @@ routes.get("/patient", PatientController.show);
 routes.put("/patient", PatientController.update);
 routes.delete("/Patient", PatientController.delete);
 routes.get("/patient/calls", PatientController.calls);
+routes.get("/patient/scheduled-calls", PatientController.scheduledCalls);
 
 routes.get("/psychologist", PsychologistController.show);
 routes.put("/psychologist", PsychologistController.update);

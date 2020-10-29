@@ -1,6 +1,7 @@
 import Psychologist from "../models/Psychologist";
 import Call from "../models/Call";
 import Patient from "../models/Patient";
+const { Op } = require("sequelize");
 
 class PsychologistController {
   async show(request, response) {
@@ -22,6 +23,8 @@ class PsychologistController {
       const id = request.auth_id;
       const call = await Call.findAll({
         where: { psychologist_id: id },
+        order: [["cal_start", "DESC"]],
+        limit: 10,
         include: [
           {
             model: Patient,

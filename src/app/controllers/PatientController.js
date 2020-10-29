@@ -17,6 +17,38 @@ class PatientController {
     return response.json(patient);
   }
 
+  async scheduledCalls(request, response) {
+    try {
+      const id = request.auth_id;
+      const call = await Call.findAll({
+        where: {
+          [Op.and]: [
+            { patient_id: id },
+            { cal_start: { [Op.gt]: Date.now() } },
+          ],
+        },
+        order: [["cal_start", "DESC"]],
+        limit: 10,
+        include: [
+          {
+            model: Patient,
+            as: "fk_patients",
+            attributes: { exclude: ["pat_password_hash"] },
+          },
+          {
+            model: Psychologist,
+            as: "fk_psychologists",
+            attributes: { exclude: ["psy_password_hash"] },
+          },
+        ],
+      });
+
+      return response.json(call);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async calls(request, response) {
     try {
       const id = request.auth_id;
