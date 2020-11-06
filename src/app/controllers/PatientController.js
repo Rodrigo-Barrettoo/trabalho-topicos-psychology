@@ -56,6 +56,7 @@ class PatientController {
       const call = await Call.findAll({
         where: { patient_id: id },
         attributes: { exclude: ["cal_note"] },
+        order: [["cal_start", "DESC"]],
         include: [
           {
             model: Patient,

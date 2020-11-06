@@ -31,17 +31,17 @@ class CallController {
 
   async store(request, response) {
     try {
-      const { patient_id, psychologist_id, cal_start } = request.body;
+      let { patient_id, psychologist_id, cal_start } = request.body;
 
       if (cal_start == null) {
         cal_start = Date.now();
       } else if (cal_start < Date.now()) {
         return response.json({ error: "Data invalida" });
       }
+
       const data = {
         patient_id: patient_id,
-        psychologist_id: request.body.psychologist_id,
-        cal_note: request.body.cal_note,
+        psychologist_id: psychologist_id,
         cal_start: cal_start,
       };
 
