@@ -120,6 +120,16 @@ class CallController {
       return response.json(error);
     }
   }
+
+  async getAnonimo(request, response) {
+    const callsAnonimas = await Call.findAll({
+      where: {
+        psychologist_id: null,
+      }
+    });
+    console.log(callsAnonimas);
+    return response.json(callsAnonimas)
+  }
 }
 
 export default new CallController();

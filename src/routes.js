@@ -51,5 +51,6 @@ routes.delete("/psy-availability/:id", Psy_availabilityController.delete);
 
 routes.put("/call/:id", CallController.edit);
 routes.post("/call/:id", CallController.close);
+routes.get("/calls-anonima", CallController.getAnonimo);
 
 export default routes;
