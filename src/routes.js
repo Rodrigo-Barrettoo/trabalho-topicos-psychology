@@ -30,6 +30,7 @@ routes.post("/patient", PatientController.store);
 routes.post("/call", CallController.store);
 routes.get("/call/:id/history", CallController.history);
 routes.get("/call/:id", CallController.show);
+routes.get("/psychologist/list", PsychologistController.list);
 
 routes.use(autenticacaoMiddleware);
 

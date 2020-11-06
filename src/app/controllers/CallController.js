@@ -31,27 +31,18 @@ class CallController {
 
   async store(request, response) {
     try {
-      const { patient_id } = request.body;
+      const { patient_id, psychologist_id, cal_start } = request.body;
 
-      let patientExists = await Patient.findOne({
-        where: { id: patient_id },
-      });
-
-      /*
-      let psychologistExists = await Psychologist.findOne({
-        where: { id: psychologist_id },
-      });
-      */
-
-      /* if (!psychologistExists) {
-        return response.json({ error: "Psicologo não existe" });
-      }*/
-
+      if (cal_start == null) {
+        cal_start = Date.now();
+      } else if (cal_start < Date.now()) {
+        return response.json({ error: "Data invalida" });
+      }
       const data = {
-        patient_id: request.body.patient_id,
-        //   psychologist_id: request.body.psychologist_id,
+        patient_id: patient_id,
+        psychologist_id: request.body.psychologist_id,
         cal_note: request.body.cal_note,
-        cal_start: Date.now(),
+        cal_start: cal_start,
       };
 
       const call = await Call.create(data);

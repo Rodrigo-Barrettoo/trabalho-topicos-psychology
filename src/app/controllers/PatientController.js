@@ -1,6 +1,7 @@
 import Patient from "../models/Patient";
 import Call from "../models/Call";
 import Psychologist from "../models/Psychologist";
+const { Op } = require("sequelize");
 
 class PatientController {
   async show(request, response) {

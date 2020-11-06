@@ -1,6 +1,7 @@
 import Psychologist from "../models/Psychologist";
 import Call from "../models/Call";
 import Patient from "../models/Patient";
+import Psy_availability from "../models/Psy_availability";
 const { Op } = require("sequelize");
 
 class PsychologistController {
@@ -11,6 +12,30 @@ class PsychologistController {
       attributes: { exclude: ["psy_password", "psy_password_hash"] },
     });
 
+    if (!psychologist) {
+      return response.status(401).json({ error: "Psicologo não existe" });
+    }
+
+    return response.json(psychologist);
+  }
+
+  async list(request, response) {
+    const psychologist = await Psychologist.findAll({
+      attributes: { exclude: ["psy_password", "psy_password_hash"] },
+      include: [
+        {
+          model: Psy_availability,
+          as: "fk_psy_availability",
+          attributes: { exclude: ["created_at", "updated_at", "id"] },
+        },
+        {
+          model: Call,
+          as: "fk_calls",
+          where: { cal_start: { [Op.gt]: Date.now() } },
+          required: false,
+        },
+      ],
+    });
     if (!psychologist) {
       return response.status(401).json({ error: "Psicologo não existe" });
     }

@@ -31,6 +31,18 @@ class Psychologist extends Model {
     return this;
   }
 
+  static associate(models) {
+    this.hasMany(models.Psy_availability, {
+      foreignKey: "psychologist_id",
+      as: "fk_psy_availability",
+    });
+
+    this.hasMany(models.Call, {
+      foreignKey: "psychologist_id",
+      as: "fk_calls",
+    });
+  }
+
   checkPasswordPsychologist(password) {
     return bcrypt.compare(password, this.psy_password_hash);
   }
