@@ -2,7 +2,7 @@ import express from "express";
 import routes from "./routes";
 import cors from 'cors';
 import path from 'path';
-import testeLog from './teste';
+import tarefa from './tarefa';
 
 import "./database";
 
@@ -12,7 +12,7 @@ class App {
 
     this.middlewares();
     this.routes();
-    this.teste();
+    this.tarefaEmail();
   }
 
   middlewares() {
@@ -26,8 +26,8 @@ class App {
     this.server.use(routes);
   }
 
-  teste() {
-    testeLog();
+  tarefaEmail() {
+    tarefa();
   }
 }
 

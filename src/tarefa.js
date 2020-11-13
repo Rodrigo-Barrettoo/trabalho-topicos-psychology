@@ -34,6 +34,7 @@ export default () =>
         //13:00 - 12:00 === 780 - 720 = 60
         if (horMinAg - horMinAt <= 15 && horMinAg - horMinAt > 0) {
           const minutos = (horMinAg - horMinAt);
+          console.log(call.Patient);
           await Mail(call.Patient, minutos);
         }
       }
